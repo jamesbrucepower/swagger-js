@@ -46,6 +46,7 @@
     "chai": "^2.3.0",
     "connect-cors": "^0.5.6",
     "del": "^1.1.1",
+    "exorcist": "^0.4.0",
     "expect": "1.4.0",
     "faux-jax": "^4.0.0",
     "gulp": "^3.8.10",
@@ -68,7 +69,8 @@
     "selenium-webdriver": "^2.45.1",
     "uglifyify": "^3.0.1",
     "unit.js": "^2.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "vinyl-transform": "^1.0.0"
   },
   "license": "Apache-2.0"
 }

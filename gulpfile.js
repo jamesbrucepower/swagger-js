@@ -9,6 +9,8 @@ var header = require('gulp-header');
 var istanbul = require('gulp-istanbul');
 var jshint = require('gulp-jshint');
 var mocha  = require('gulp-mocha');
+var exorcist = require('exorcist');
+var transform = require('vinyl-transform');
 var pkg = require('./package');
 var source = require('vinyl-source-stream');
 // Browser Unit Tests
@@ -93,6 +95,7 @@ gulp.task('build', function (cb) {
       .bundle()
       .pipe(source(basename + (!useDebug ? '.min' : '') + '.js'))
       .pipe(buffer())
+      .pipe(transform(function() { return exorcist('./browser/swagger-client.js.map'); }))
       .pipe(header(banner, {pkg: pkg}))
       .pipe(gulp.dest('./browser/'))
       .on('error', function (err) {
