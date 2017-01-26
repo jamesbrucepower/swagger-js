@@ -11,6 +11,7 @@ var jshint = require('gulp-jshint');
 var mocha  = require('gulp-mocha');
 var exorcist = require('exorcist');
 var transform = require('vinyl-transform');
+var sourcemaps = require('gulp-sourcemaps');
 var pkg = require('./package');
 var source = require('vinyl-source-stream');
 // Browser Unit Tests
@@ -20,7 +21,7 @@ var assign = require('object.assign');
 var connect = require('gulp-connect');
 var cors = require('connect-cors');
 
-// This is a workaround for this bug...https://github.com/feross/buffer/issues/79 
+// This is a workaround for this bug...https://github.com/feross/buffer/issues/79
 // Please refactor this, when the bug is resolved!
 // PS: you need to depend on buffer@3.4.3
 var OldBuffer = require.resolve('buffer/');
@@ -91,13 +92,19 @@ gulp.task('build', function (cb) {
       b.transform({global: true}, 'uglifyify');
     }
 
-    b.transform('brfs')
+    var p = b.transform('brfs')
       .bundle()
       .pipe(source(basename + (!useDebug ? '.min' : '') + '.js'))
       .pipe(buffer())
+      .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(transform(function() { return exorcist('./browser/swagger-client.js.map'); }))
-      .pipe(header(banner, {pkg: pkg}))
-      .pipe(gulp.dest('./browser/'))
+      .pipe(header(banner, {pkg: pkg}));
+
+    if (useDebug) {
+      p = p.pipe(sourcemaps.write());
+    }
+
+    p.pipe(gulp.dest('./browser/'))
       .on('error', function (err) {
         callback(err);
       })
