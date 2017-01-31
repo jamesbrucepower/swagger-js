@@ -97,7 +97,7 @@ gulp.task('build', function (cb) {
       .pipe(source(basename + (!useDebug ? '.min' : '') + '.js'))
       .pipe(buffer())
       .pipe(sourcemaps.init({loadMaps: true}))
-      .pipe(transform(function() { return exorcist('./browser/swagger-client.js.map'); }))
+      //.pipe(transform(function() { return exorcist('./browser/swagger-client.js.map'); }))
       .pipe(header(banner, {pkg: pkg}));
 
     if (useDebug) {
